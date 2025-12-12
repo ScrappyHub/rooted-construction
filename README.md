@@ -1,113 +1,103 @@
-## Governance Boundaries
+# ROOTED Construction — Vertical Application
+
+This repository is the **Construction vertical** for ROOTED.
+
+It is a governed B2B layer on top of:
+
+- `rooted-core` (shared schema, RLS, RFQs, bids, bulk, workforce)
+- `rooted-platform` (governance, safety, access law)
+
+Construction is **backend-first**:  
+the markets and enforcement live in `rooted-core`; this repo wires them into UI.
+
+---
+
+## 🏗 What ROOTED Construction Is
+
+ROOTED Construction exists to:
+
+- Connect **institutions, owners, and GC’s** with verified contractors
+- Run **RFQ → bid** workflows for projects
+- Offer **bulk materials** and logistics marketplace (Premium+)
+- Coordinate **workforce & subcontractor pools** within governance limits
+- Surface **jobsite conditions** via `vertical_conditions_v1`
+
+Construction is:
+
+- ✅ B2B-only
+- ✅ Heavily governed
+- ✅ Safety and compliance focused
+- ❌ Not a gig app
+- ❌ Not an open job board
+
+---
+
+## 🔒 Governance Boundaries
 
 This repository:
 
-- Does NOT define roles, tiers, or access laws
-- Does NOT change database schema or RLS
-- Does NOT define Kids Mode or sanctuary rules
+- ❌ Does **NOT** define roles or tiers
+- ❌ Does **NOT** alter bid/bulk schemas
+- ❌ Does **NOT** bypass billing or subscription checks
+- ❌ Does **NOT** change workforce protections or abuse rules
+- ❌ Does **NOT** modify Kids, Sanctuary, or Community law
 
-All governance and access control lives in:
+Those live in:
 
-→ https://github.com/.../rooted-platform
+- `rooted-platform/governance/`
+- `rooted-core/docs/`
 
----
+Construction UI must obey:
 
-Any change that attempts to bypass ROOTED governance is invalid by design.
-
-
-# ROOTED Construction Vertical
-
-> Regional Construction & Built Environment Operating Layer  
-> **Not** a standalone app — this vertical plugs into the ROOTED Core.
-
----
-
-## What This Repo Is
-
-This repo contains the **specs, hardening plan, and future UI wiring** for the **ROOTED Construction vertical**, built on top of the existing ROOTED platform.
-
-It reuses the **same governed core** as ROOTED Community:
-
-- Supabase Auth (no custom auth here)
-- Roles: `guest`, `individual`, `vendor`, `institution`, `admin`
-- Tiers: `free`, `premium`, `premium_plus`
-- `user_tiers` + `feature_flags` as the **single source of truth**
-- Shared tables:
-  - `providers`
-  - `rfqs`, `bids`, `bulk_offers`, `bulk_offer_analytics`
-  - `events`, `event_registrations`
-  - `conversations`, `messages`
-  - `landmarks`
-  - `feed_items`, `feed_comments`, `feed_likes`
-  - `vendor_analytics_*`
-  - `account_deletion_requests`
-  - `kv_store_f009e61d`
-
-This vertical **does not** change any of that.  
-It only adds **construction-specific logic, flows, and UI**.
+- `ROOTED_VERTICAL_ACCESS_CONTRACT.md`
+- `BILLING_ARCHITECTURE.md`
+- `ROOTED_ACCESS_POWER_LAW.md`
+- `ROOTED_DEBUG_TOOLKIT_CORE.md`
 
 ---
 
-## What the Construction Vertical Does
+## 🧬 Vertical Scope
 
-The Construction vertical models:
+Within those boundaries, Construction focuses on:
 
-- Contractors, trades, suppliers (as `providers`)
-- Institutional RFQs for:
-  - Schools
-  - Municipal projects
-  - Infrastructure
-- Bids and bulk offers using the existing marketplace engine
-- Inspections, permits, safety workflows (as specs + flows)
-- Workforce and education experiences (tied to construction)
-- Landmarks:
-  - Bridges, historic buildings, mills (education-only)
+- Institution & owner **project dashboards**
+- RFQ creation and management screens
+- Vendor-side **bid submission** flows (Premium+ only)
+- Bulk materials **offer** and **selection** flows
+- Workforce / subcontractor pool **surfacing** (not open gig spam)
+- Jobsite **conditions widgets** sourced from `vertical_conditions_v1`
 
-It is meant to support:
+Construction does **not**:
 
-- Safer construction
-- Cleaner procurement
-- Clearer audit trails
-- Real-world civic infrastructure work
+- Invent new payment flows
+- Allow unverified or mis-tiered accounts into markets
+- Expose workforce tools in Kids Mode or Community
 
 ---
 
-## What It Is NOT
+## ✅ Allowed Work Here
 
-- ❌ Not a separate authentication system  
-- ❌ Not a replacement for ROOTED Community  
-- ❌ Not a crypto or token system  
-- ❌ Not a way to bypass Kids Mode or cultural consent  
-- ❌ Not financial custody on its own (escrow must use licensed rails)
+- UI wiring for RFQ, bid, and bulk flows
+- Construction-specific dashboards and views
+- Workforce pool presentation (respecting tier + law)
+- Performance, mobile, and UX polishing
+- Data visualizations on **approved analytics** from core
 
-All **roles, safety rules, consent systems, and RLS** remain governed by ROOTED Core.
+## ❌ Forbidden Work Here
 
----
-
-## Key Documents in This Repo
-
-- `ROOTED_CONSTRUCTION_AUDIT_REPORT.md`  
-  Full pre-production audit: logic, security, compliance, failure modes.
-
-- `CONSTRUCTION_BACKEND_HARDENING_CHECKLIST.md`  
-  Short checklist of critical hardening items and their status.
-
-As this vertical grows, new files will live under:
-
-- `docs/` for specs, flows, and diagrams  
-- `ui/` or `app/` for construction-specific UI wiring (reusing ROOTED Core APIs)
+- “Quick hacks” that bypass RLS or feature_flags
+- Turning workforce into public gig listings
+- Creating construction-only identity or login flows
+- Bypassing the abuse / debug toolkits and admin audit logs
 
 ---
 
-## Status
+## 🔗 Source of Authority
 
-- ✅ Audit completed (pre-production)
-- ✅ Critical hardening items implemented in Supabase (per your work)
-- 🟡 UI wiring not yet implemented
-- ⏳ No production launch announced — this vertical is still in build phase
+Construction is bound by:
 
-All future work in this repo must:
+- `rooted-core` → actual RFQ, bid, bulk, workforce logic
+- `rooted-platform` → law and power limits
 
-1. Reuse ROOTED Core (no forked auth / roles / tiers)  
-2. Respect existing Kids Mode, consent, and RLS rules  
-3. Stay aligned with the ma
+If Construction UI and root governance disagree →  
+**governance wins**.
